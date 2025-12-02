@@ -17,8 +17,8 @@ def init_db():
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password_hash VARCHAR(255) NOT NULL,
                 path_id INTEGER,
-                current_realm VARCHAR(20) NOT NULL DEFAULT 'Mortal',
-                progress_to_next DECIMAL(5,2) DEFAULT 0.00 CHECK (progress_to_next >= 0 AND progress_to_next <= 100),
+                current_realm VARCHAR(20) NOT NULL DEFAULT 'Foundation',
+                total_progress BIGINT DEFAULT 0.00,
                 madra_type VARCHAR(50) DEFAULT 'Pure',
                 clan_id INTEGER,
                 total_habits_completed INTEGER DEFAULT 0,
@@ -38,6 +38,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS realms (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(20) UNIQUE NOT NULL,
+                progress_required BIGINT DEFAULT 100,
                 order_num INTEGER NOT NULL
             );
 
@@ -50,7 +51,7 @@ def init_db():
                 frequency VARCHAR(20) DEFAULT 'daily',
                 streak_current INTEGER DEFAULT 0,
                 streak_max INTEGER DEFAULT 0,
-                progress_value DECIMAL(5,2) DEFAULT 10.0,
+                progress_value BIGINT DEFAULT 10,
                 repeat_days INTEGER DEFAULT 127,
                 created_at TIMESTAMP DEFAULT NOW()
             );
@@ -70,7 +71,7 @@ def init_db():
                 name VARCHAR(50) UNIQUE NOT NULL,
                 leader_id INTEGER REFERENCES users(id),
                 description TEXT,
-                total_clan_progress DECIMAL(10,2) DEFAULT 0,
+                total_clan_progress BIGINT DEFAULT 0,
                 member_count INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT NOW()
             );
@@ -115,7 +116,7 @@ def init_db():
         """))
 
         # === Add missing columns to habits ===
-        conn.execute(text("ALTER TABLE habits ADD COLUMN IF NOT EXISTS progress_value DECIMAL(5,2) DEFAULT 10.0;"))
+        conn.execute(text("ALTER TABLE habits ADD COLUMN IF NOT EXISTS progress_value BIGINT DEFAULT 10;"))
         conn.execute(text("ALTER TABLE habits ADD COLUMN IF NOT EXISTS repeat_days INTEGER DEFAULT 127;"))
         conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS show_progress_public BOOLEAN DEFAULT true;"))
         conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_visible_to_clan BOOLEAN DEFAULT true;"))
@@ -124,22 +125,21 @@ def init_db():
         result = conn.execute(text("SELECT COUNT(*) FROM realms")).scalar()
         if result == 0:
             conn.execute(text("""
-                INSERT INTO realms (name, order_num) VALUES
-
-                ('Foundation', 1), 
-                ('Copper', 2), 
-                ('Iron', 3),
-                ('Jade', 4), 
-                ('Lowgold', 5), 
-                ('Highgold', 6), 
-                ('Truegold', 7),
-                ('Underlord', 8), 
-                ('Overlord', 9), 
-                ('Archlord', 10),
-                ('Herald', 11), 
-                ('Sage', 12), 
-                ('Monarch', 13);
-            """))
+                              INSERT INTO realms (name, order_num, progress_required)
+                              VALUES ('Foundation', 1, 0),
+                                     ('Copper', 2, 1000),
+                                     ('Iron', 3, 10000),
+                                     ('Jade', 4, 50000),
+                                     ('Lowgold', 5, 150000),
+                                     ('Highgold', 6, 400000),
+                                     ('Truegold', 7, 1000000),
+                                     ('Underlord', 8, 2500000),
+                                     ('Overlord', 9, 6000000),
+                                     ('Archlord', 10, 15000000),
+                                     ('Herald', 11, 35000000),
+                                     ('Sage', 12, 75000000),
+                                     ('Monarch', 13, 200000000);
+                              """))
 
         # === Seed paths if table is empty ===
         result = conn.execute(text("SELECT COUNT(*) FROM paths")).scalar()

@@ -1,7 +1,7 @@
 <!-- app/templates/tabs/habits.html -->
 <div class="user-card">
-    <h2>Welcome, <span id="username"></span></h2>
-    <p>Realm: <strong id="realm"></strong> • Progress: <span id="progress"></span>%</p>
+    <h2><span id="username"></span></h2>
+    <p>Realm: <strong id="realm"></strong> • Progress: <span id="progress"></span> / <span id="required_progress"></span></p>
     <div class="progress-bar"><div id="progress-fill" style="width: 0%"></div></div>
 </div>
 
@@ -28,8 +28,8 @@
             </div>
 
             <div class="form-group">
-                <label for="progress_value">Progress per Completion (%)</label>
-                <input type="number" name="progress_value" id="progress_value" min="1" max="100" value="10" step="0.5">
+                <label for="progress_value">Progress per Completion</label>
+                <input type="number" name="progress_value" id="progress_value" min="1" max="10000" value="10">
             </div>
 
             <div class="form-group">
