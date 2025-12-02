@@ -131,4 +131,13 @@ def init_db():
                 ('Herald', 11), ('Sage', 12), ('Monarch', 13);
             """))
 
-    print("Database schema verified and up to date.")
+        # === Seed paths if table is empty ===
+        result = conn.execute(text("SELECT COUNT(*) FROM paths")).scalar()
+        if result == 0:
+            conn.execute(text("""
+                              INSERT INTO paths (name, madra_type)
+                              VALUES ('No Path', 'Pure');
+                              """))
+
+
+print("\t\t> Database schema verified and up to date.")

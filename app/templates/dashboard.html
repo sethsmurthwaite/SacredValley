@@ -20,14 +20,19 @@
         </header>
 
         <main class="content">
-            {% include "tabs/" + active_tab + ".html" %}
+            {% include "tabs/" ~ active_tab ~ ".html" %}
         </main>
     </div>
 
     <script>
+        console.log('Dashboard script starting...');
+
         const user = {{ user_json|safe }};
         const habits = {{ habits_json|safe }};
         const today = "{{ today }}";
+
+        console.log("User loaded:", user);
+        console.log("Habits loaded:", habits);
     </script>
 
     <script src="/static/app.js"></script>

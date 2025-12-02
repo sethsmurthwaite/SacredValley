@@ -35,6 +35,10 @@ async def dashboard(request: Request, tab: str = "habits", user=Depends(get_curr
 
     # Convert datetime objects to strings
     user_clean = dict(user)
+
+    print(user_clean)
+    print(json.dumps(user_clean, indent=4, default=safe_serialize))
+
     if user_clean.get("created_at"):
         user_clean["created_at"] = user_clean["created_at"].isoformat()
 
