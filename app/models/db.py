@@ -125,10 +125,20 @@ def init_db():
         if result == 0:
             conn.execute(text("""
                 INSERT INTO realms (name, order_num) VALUES
-                ('Mortal', 0), ('Foundation', 1), ('Copper', 2), ('Iron', 3),
-                ('Jade', 4), ('Lowgold', 5), ('Highgold', 6), ('Truegold', 7),
-                ('Underlord', 8), ('Overlord', 9), ('Archlord', 10),
-                ('Herald', 11), ('Sage', 12), ('Monarch', 13);
+
+                ('Foundation', 1), 
+                ('Copper', 2), 
+                ('Iron', 3),
+                ('Jade', 4), 
+                ('Lowgold', 5), 
+                ('Highgold', 6), 
+                ('Truegold', 7),
+                ('Underlord', 8), 
+                ('Overlord', 9), 
+                ('Archlord', 10),
+                ('Herald', 11), 
+                ('Sage', 12), 
+                ('Monarch', 13);
             """))
 
         # === Seed paths if table is empty ===
