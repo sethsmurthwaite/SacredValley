@@ -12,7 +12,12 @@ from app.routes.auth import get_current_user, row_to_dict
 router = APIRouter()
 
 @router.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(request: Request, tab: str = "habits", user=Depends(get_current_user)):
+async def dashboard(
+    request: Request,
+    tab: str = "habits",
+    user=Depends(get_current_user),
+    db=Depends(get_db)  # ← ADD THIS LINE
+):
     if not user:
         return RedirectResponse("/login", 303)
 
@@ -21,24 +26,22 @@ async def dashboard(request: Request, tab: str = "habits", user=Depends(get_curr
 
     habits_list = []
     today = date.today().isoformat()
+
     if active_tab == "habits":
-        db = next(get_db())
         habits = db.execute(text("""
-            SELECT h.*, MAX(hc.completed_at)::date AS last_completion
+            SELECT h.*, 
+                   MAX(hc.completed_at)::date AS last_completion
             FROM habits h
-            LEFT JOIN habit_completions hc ON hc.habit_id = h.id
+            LEFT JOIN habit_completions hc ON hc.habit_id = h.id AND hc.user_id = :uid
             WHERE h.user_id = :uid
             GROUP BY h.id
             ORDER BY h.frequency, h.name
         """), {"uid": user["id"]}).fetchall()
+
         habits_list = [dict(h._mapping) for h in habits]
 
-    # Convert datetime objects to strings
+    # Rest of your code unchanged...
     user_clean = dict(user)
-
-    print(user_clean)
-    print(json.dumps(user_clean, indent=4, default=safe_serialize))
-
     if user_clean.get("created_at"):
         user_clean["created_at"] = user_clean["created_at"].isoformat()
 

@@ -117,7 +117,10 @@ class HabitsManager {
                         <h3>${h.name}</h3>
                         <div class="habit-meta">
                             <span class="tag">${h.frequency}</span>
-                            <span class="progress-gain">+${h.progress_value}</span>
+                            ${h.last_completion === todayStr 
+                                ? `<span class="progress-gain">+${h.progress_value} madra</span>` 
+                                : ''
+                            }
                             <span class="streak">🔥 ${h.streak_current || 0}</span>
                         </div>
                     </div>
@@ -149,6 +152,7 @@ class HabitsManager {
         updateProgressBar(); // ← always refresh progress bar after render
     }
 
+
     setupHabitCompletion() {
         // Remove old listeners
         document.querySelectorAll('.complete-checkbox').forEach(cb => {
@@ -165,8 +169,7 @@ class HabitsManager {
                 try {
                     const resp = await fetch(`/habits/${habitId}/complete`, { method: 'POST' });
                     if (resp.ok || resp.redirected) {
-                        location.reload(); // ← temporary — works perfectly for now
-                        // Later you can replace with: await fetch habits data + this.renderHabits()
+                        location.reload();
                     } else {
                         alert("Failed");
                         cb.checked = false;

@@ -399,3 +399,46 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
 
 html[data-theme="light"] #sun-icon { display: none; }
 html[data-theme="light"] #moon-icon { display: block; }
+
+.contribution-wrapper {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.contribution-day {
+    width: 10px;
+    height: 10px;
+    background: var(--level-0, #333);
+    border-radius: 2px;
+    transition: transform 0.2s ease;
+}
+
+.contribution-day:hover {
+    transform: scale(1.4);
+    z-index: 10;
+}
+
+.level-1 { background: #9be9a8; }
+.level-2 { background: #40c463; }
+.level-3 { background: #30a14e; }
+.level-4 { background: #216e39; }
+
+.tooltip {
+    position: absolute;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+
+.tooltip.visible {
+    opacity: 1;
+}

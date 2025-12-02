@@ -1,2 +1,328 @@
-<h2>Your Sacred Path</h2>
-<p>Coming soon — choose your madra type, view advancement requirements, and track your cultivation journey.</p>
+<div class="user-card">
+    <h2>Your Sacred Path</h2>
+    <p>Track your cultivation journey through time. Every completion is a step toward ascension.</p>
+</div>
+
+
+<div class="analytics-card">
+    <div class="heatmap-header">
+        <h3>Daily Cultivation</h3>
+        <div class="heatmap-legend">
+            <span>Less</span>
+            <div class="color-scale">
+                <div data-level="0"></div>
+                <div data-level="1"></div>
+                <div data-level="2"></div>
+                <div data-level="3"></div>
+                <div data-level="4"></div>
+            </div>
+            <span>More</span>
+        </div>
+    </div>
+    <div id="contribution-grid"></div>
+    <div class="heatmap-footer">
+        <small>Last contribution {{ days_ago }} days ago</small>
+    </div>
+</div>
+
+<br><br><br>
+
+<div class="paths-header">
+    <h2>Completion History & Analytics</h2>
+    <div class="time-range-selector">
+        <button class="range-btn active" data-range="week">Last 7 Days</button>
+        <button class="range-btn" data-range="month">Last 30 Days</button>
+        <button class="range-btn" data-range="year">This Year</button>
+    </div>
+</div>
+
+<div class="analytics-grid">
+    <!-- Completion Streak Heatmap -->
+
+
+    <!-- Line Chart: Madra Earned Over Time -->
+    <div class="analytics-card">
+        <h3>Madra Earned</h3>
+        <canvas id="line-chart" height="300"></canvas>
+    </div>
+
+    <!-- Bar Chart: Habits Completed by Day -->
+    <div class="analytics-card">
+        <h3>Habits Completed</h3>
+        <canvas id="bar-chart" height="300"></canvas>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="analytics-card stats-grid">
+        <div class="stat-item">
+            <strong>Total Madra Earned</strong>
+            <p id="total-madra">0</p>
+        </div>
+        <div class="stat-item">
+            <strong>Longest Streak</strong>
+            <p id="longest-streak">0 days</p>
+        </div>
+        <div class="stat-item">
+            <strong>Current Streak</strong>
+            <p id="current-streak">0 days</p>
+        </div>
+        <div class="stat-item">
+            <strong>Total Completions</strong>
+            <p id="total-completions">0</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Paths Tab Specific Styles — fits perfectly with your theme */
+    .paths-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .time-range-selector {
+        display: flex;
+        gap: 0.5rem;
+        background: var(--card);
+        padding: 0.4rem;
+        border-radius: 12px;
+        border: 1px solid #333;
+    }
+
+    .range-btn {
+        background: none;
+        border: none;
+        color: var(--text);
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+    }
+
+    .range-btn:hover {
+        background: rgba(65, 105, 225, 0.2);
+    }
+
+    .range-btn.active {
+        background: var(--accent);
+        color: white;
+        font-weight: bold;
+    }
+
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .analytics-card {
+        background: var(--card);
+        padding: 1.8rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .analytics-card h3 {
+        margin: 0 0 1.2rem 0;
+        color: var(--accent);
+        font-size: 1.3rem;
+    }
+
+    canvas {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    /* Heatmap Legend */
+    .heatmap-legend {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .legend-colors {
+        display: flex;
+        gap: 4px;
+    }
+
+    .legend-colors > div {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(65, 105, 225, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(65, 105, 225, 0.3);
+    }
+
+    .stat-item strong {
+        display: block;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-item p {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--success);
+        margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .paths-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .time-range-selector {
+            justify-content: center;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    .heatmap-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    #contribution-grid {
+        display: grid;
+        grid-template-columns: repeat(52, 1fr);
+        gap: 3px;
+        padding: 10px 0;
+        overflow: hidden;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 12px;
+    }
+
+    .contribution-day {
+        width: 11px;
+        height: 11px;
+        background: #333;
+        border-radius: 3px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .contribution-day:hover {
+        transform: scale(1.3);
+        box-shadow: 0 0 10px var(--accent);
+        z-index: 10;
+    }
+
+    /* Color levels — sacred flame progression */
+    .contribution-day[data-level="0"] {
+        background: #333;
+    }
+
+    .contribution-day[data-level="1"] {
+        background: #4169e1;
+    }
+
+    .contribution-day[data-level="2"] {
+        background: #6495ed;
+    }
+
+    .contribution-day[data-level="3"] {
+        background: #87cefa;
+    }
+
+    .contribution-day[data-level="4"] {
+        background: #50fa7b;
+        opacity: 1;
+        box-shadow: 0 0 8px #50fa7b;
+    }
+
+
+
+    /* Tooltip */
+    .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+        z-index: 1000;
+        border: 1px solid var(--accent);
+    }
+
+    .tooltip.visible {
+        opacity: 1;
+    }
+
+    .color-scale {
+        display: flex;
+        gap: 4px;
+    }
+
+    .color-scale > div {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+    }
+
+    .color-scale [data-level="0"] {
+        background: #333;
+    }
+
+    .color-scale [data-level="1"] {
+        background: #4169e1;
+    }
+
+    .color-scale [data-level="2"] {
+        background: #6495ed;
+    }
+
+    .color-scale [data-level="3"] {
+        background: #87cefa;
+    }
+
+    .color-scale [data-level="4"] {
+        background: #50fa7b;
+    }
+
+    .heatmap-footer {
+        text-align: center;
+        margin-top: 1rem;
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+</style>
+
+<script src="/static/app_js/path.js" defer></script>
