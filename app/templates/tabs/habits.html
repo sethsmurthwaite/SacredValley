@@ -20,18 +20,23 @@
         <h2>Add New Habit</h2>
         <br><br>
         <form id="habit-form">
+            <input type="hidden" name="repeat_days" value="127">
+
             <div class="form-group">
                 <label for="name">Habit Name</label>
                 <input type="text" name="name" id="name" required placeholder="e.g., Morning Meditation">
             </div>
+
             <div class="form-group">
                 <label for="progress_value">Progress per Completion (%)</label>
                 <input type="number" name="progress_value" id="progress_value" min="1" max="100" value="10" step="0.5">
             </div>
+
             <div class="form-group">
                 <label for="description">Description (optional)</label>
                 <textarea name="description" id="description" rows="3" placeholder="Why this habit matters..."></textarea>
             </div>
+
             <div class="form-group">
                 <label for="frequency">Frequency</label>
                 <select name="frequency" id="frequency">
@@ -39,6 +44,7 @@
                     <option value="weekly">Weekly</option>
                 </select>
             </div>
+
             <div id="repeat-days" class="form-group" style="display:none;">
                 <label>Repeat on these days:</label>
                 <div class="day-grid">
@@ -51,6 +57,7 @@
                     <label class="day-label"><input type="checkbox" name="days" value="64" checked><span>Sat</span></label>
                 </div>
             </div>
+
             <div class="modal-actions">
                 <button type="submit" class="btn-primary">Create Habit</button>
                 <button type="button" id="cancel-modal" class="btn-secondary">Cancel</button>
@@ -58,3 +65,6 @@
         </form>
     </div>
 </div>
+
+<!-- Load habits.js only when this tab is active -->
+<script src="/static/app_js/habits.js"></script>
