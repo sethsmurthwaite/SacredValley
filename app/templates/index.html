@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sacred Valley</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Welcome to Sacred Valley</h1>
+    <p>You are a <strong>Mortal</strong> beginning your journey on the Sacred Arts.</p>
+    <button onclick="checkHabit()">Check off a habit (test)</button>
+    <div id="result"></div>
+
+    <script>
+        async function checkHabit() {
+            const res = await fetch("/check-habit-test", {method: "POST"});
+            const data = await res.json();
+            document.getElementById("result").innerHTML =
+                `<p>Progress: ${data.progress}% toward ${data.next_realm}</p>`;
+        }
+    </script>
+</body>
+</html>

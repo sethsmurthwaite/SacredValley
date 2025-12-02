@@ -1,0 +1,53 @@
+:root {
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --accent: #4169e1;
+    --text: #e0e0ff;
+    --success: #50fa7b;
+}
+
+[data-theme="light"] {
+    --bg: #f8f8f2;
+    --card: #ffffff;
+    --accent: #4169e1;
+    --text: #333;
+}
+
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+.app { max-width: 1000px; margin: 0 auto; padding: 1rem; }
+
+.topbar {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+}
+.topbar h1 { font-size: 1.8rem; }
+.tabs button { background:none; border:none; color:var(--text); padding:0.5rem 1rem; cursor:pointer; font-size:1rem; }
+.tabs button.active { border-bottom: 3px solid var(--accent); font-weight: bold; }
+
+#theme-toggle { background:none; border:1px solid var(--text); padding:0.5rem 1rem; border-radius:4px; cursor:pointer; }
+
+.user-card { background:var(--card); padding:1.5rem; border-radius:12px; margin-bottom:2rem; }
+.progress-bar { height:20px; background:#333; border-radius:10px; overflow:hidden; margin-top:0.5rem; }
+.progress-bar > div { height:100%; background:var(--accent); transition:width 0.5s; }
+
+.habits-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.add-btn { background:var(--accent); color:white; border:none; width:44px; height:44px; border-radius:50%; font-size:1.5rem; cursor:pointer; }
+
+.habit-list { list-style:none; }
+.habit-item {
+    display:flex; align-items:center; gap:1rem; background:var(--card); padding:1rem; border-radius:12px; margin-bottom:0.8rem;
+}
+.habit-item input[type="checkbox"] { width:24px; height:24px; }
+.habit-info strong { display:block; font-size:1.1rem; }
+.habit-info small { opacity:0.8; }
+.streak { margin-left:auto; font-size:1.4rem; }
+
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index:100; }
+.modal.active { display:flex; }
+.modal-content {
+    background:var(--card); padding:2rem; border-radius:16px; width:90%; max-width:500px;
+}
+.modal-content input, .modal-content textarea, .modal-content select { width:100%; padding:0.8rem; margin:0.5rem 0; border-radius:8px; border:none; background:#333; color:white; }
+.modal-actions { display:flex; gap:1rem; margin-top:1rem; }
+.modal-actions button { flex:1; padding:0.8rem; border:none; border-radius:8px; cursor:pointer; }
+.modal-actions button:first-child { background:var(--accent); color:white; }

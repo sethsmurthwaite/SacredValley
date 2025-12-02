@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sacred Valley - Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome Back, Sacred Artist</h1>
+
+        {% if error %}
+            <p style="color: #ff6b6b;">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="/login">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Enter the Valley</button>
+        </form>
+
+        <p><a href="/signup">New cultivator? Begin your path</a></p>
+    </div>
+</body>
+</html>
