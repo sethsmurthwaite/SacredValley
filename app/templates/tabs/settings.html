@@ -1,0 +1,36 @@
+<div class="settings-grid">
+    <div class="settings-card">
+        <h2>Account</h2>
+        <form method="POST" action="/settings/username">
+            <input type="text" name="new_username" placeholder="New username" required>
+            <button type="submit">Change Username</button>
+        </form>
+        <form method="POST" action="/settings/email">
+            <input type="email" name="new_email" placeholder="New email" required>
+            <button type="submit">Change Email</button>
+        </form>
+    </div>
+
+    <div class="settings-card">
+        <h2>Privacy</h2>
+        <form method="POST" action="/settings/privacy">
+            <label>
+                <input type="checkbox" name="show_progress" {% if user.show_progress_public %}checked{% endif %}>
+                Show progress on leaderboards
+            </label>
+            <label>
+                <input type="checkbox" name="clan_visibility" {% if user.profile_visible_to_clan %}checked{% endif %}>
+                Visible to clan members
+            </label>
+            <button type="submit">Save Privacy</button>
+        </form>
+    </div>
+
+    <div class="settings-card danger">
+        <h2>Danger Zone</h2>
+        <form method="GET" action="/logout">
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+        <button id="delete-account-btn" class="btn-danger">Delete Account</button>
+    </div>
+</div>

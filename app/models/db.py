@@ -117,6 +117,8 @@ def init_db():
         # === Add missing columns to habits ===
         conn.execute(text("ALTER TABLE habits ADD COLUMN IF NOT EXISTS progress_value DECIMAL(5,2) DEFAULT 10.0;"))
         conn.execute(text("ALTER TABLE habits ADD COLUMN IF NOT EXISTS repeat_days INTEGER DEFAULT 127;"))
+        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS show_progress_public BOOLEAN DEFAULT true;"))
+        conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_visible_to_clan BOOLEAN DEFAULT true;"))
 
         # === Seed realms if table is empty ===
         result = conn.execute(text("SELECT COUNT(*) FROM realms")).scalar()

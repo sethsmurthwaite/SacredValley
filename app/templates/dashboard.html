@@ -8,87 +8,30 @@
 </head>
 <body>
     <div class="app">
-        <!-- Top bar -->
         <header class="topbar">
             <h1>Sacred Valley</h1>
             <nav class="tabs">
-                <button class="tab active" data-tab="habits">Habits</button>
-                <button class="tab" data-tab="path">Path</button>
-                <button class="tab" data-tab="clans">Clans</button>
-                <button class="tab" data-tab="settings">Settings</button>
+                <a href="/dashboard" class="tab {% if active_tab == 'habits' %}active{% endif %}">Habits</a>
+                <a href="/dashboard?tab=path" class="tab {% if active_tab == 'path' %}active{% endif %}">Path</a>
+                <a href="/dashboard?tab=clans" class="tab {% if active_tab == 'clans' %}active{% endif %}">Clans</a>
+                <a href="/dashboard?tab=settings" class="tab {% if active_tab == 'settings' %}active{% endif %}">Settings</a>
             </nav>
-            <button id="theme-toggle">Light/Dark</button>
+            <button id="theme-toggle">Dark/Light</button>
         </header>
 
-        <!-- Tab content -->
         <main class="content">
-            <section id="habits" class="tab-content active">
-                <div class="user-card">
-                    <h2>Welcome, {{ user.username }}</h2>
-                    <p>Realm: <strong>{{ user.current_realm }}</strong> • Progress: {{ user.progress_to_next }}%</p>
-                    <div class="progress-bar"><div style="width: {{ user.progress_to_next }}%"></div></div>
-                </div>
-
-                <div class="habits-header">
-                    <h2>Your Habits</h2>
-                    <button id="add-habit-btn" class="add-btn">＋</button>
-                </div>
-
-                {% if habits|length == 0 %}
-                    <p>No habits yet. Click ＋ to add one.</p>
-                {% else %}
-                    <ul class="habit-list">
-                    {% for h in habits %}
-                        <li class="habit-item" data-id="{{ h.id }}">
-                            <input type="checkbox" class="complete-checkbox"
-                                   {% if h.last_completion == today %}checked disabled{% endif %}>
-                            <div class="habit-info">
-                                <strong>{{ h.name }}</strong>
-                                <small>{{ h.frequency }} • +{{ h.progress_value }}%</small>
-                                <p class="desc">{{ h.description or "" }}</p>
-                            </div>
-                            <div class="streak">🔥 {{ h.streak_current }}</div>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-            </section>
-
-            <section id="path" class="tab-content">Path tab (coming soon)</section>
-            <section id="clans" class="tab-content">Clans tab (coming soon)</section>
-            <section id="settings" class="tab-content">Settings tab (coming soon)</section>
+            {% include "tabs/" + active_tab + ".html" %}
         </main>
     </div>
 
-    <!-- Add Habit Modal -->
-    <div id="habit-modal" class="modal">
-        <div class="modal-content">
-            <h2>Add New Habit</h2>
-            <form id="habit-form">
-                <input type="text" name="name" placeholder="Habit name" required>
-                <input type="number" name="progress_value" min="1" max="100" value="10" step="0.5">
-                <textarea name="description" placeholder="Description (optional)"></textarea>
-                <select name="frequency">
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                </select>
-                <div id="repeat-days" style="display:none;">
-                    <label><input type="checkbox" name="days" value="1"> Sun</label>
-                    <label><input type="checkbox" name="days" value="2" checked> Mon</label>
-                    <label><input type="checkbox" name="days" value="4" checked> Tue</label>
-                    <label><input type="checkbox" name="days" value="8" checked> Wed</label>
-                    <label><input type="checkbox" name="days" value="16" checked> Thu</label>
-                    <label><input type="checkbox" name="days" value="32" checked> Fri</label>
-                    <label><input type="checkbox" name="days" value="64" checked> Sat</label>
-                </div>
-                <div class="modal-actions">
-                    <button type="submit">Create</button>
-                    <button type="button" id="cancel-modal">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <script>
+        const user = {{ user_json|safe }};
+        const habits = {{ habits_json|safe }};
+        const today = "{{ today }}";
+    </script>
 
     <script src="/static/app.js"></script>
 </body>
+
 </html>
+

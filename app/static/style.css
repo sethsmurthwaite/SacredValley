@@ -51,3 +51,316 @@ body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--t
 .modal-actions { display:flex; gap:1rem; margin-top:1rem; }
 .modal-actions button { flex:1; padding:0.8rem; border:none; border-radius:8px; cursor:pointer; }
 .modal-actions button:first-child { background:var(--accent); color:white; }
+
+
+/* Auth Pages */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.auth-card {
+    background: var(--card);
+    padding: 3rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.auth-card h1 {
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.auth-card p {
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 1rem;
+    margin: 0.8rem 0;
+    border: none;
+    border-radius: 8px;
+    background: #333;
+    color: white;
+    font-size: 1rem;
+}
+
+.auth-card button {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.auth-card button:hover {
+    background: #6495ed;
+}
+
+.footer-link {
+    margin-top: 2rem;
+    opacity: 0.8;
+}
+
+.error {
+    background: #440000;
+    color: #ff6b6b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.settings-card {
+    background: var(--card);
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.settings-card h2 {
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.settings-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.settings-card input {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: none;
+    background: #333;
+    color: white;
+}
+
+.settings-card button {
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-logout {
+    background: #555;
+    color: white;
+}
+
+.btn-danger {
+    background: #880000;
+    color: white;
+}
+
+.btn-danger:hover { background: #aa0000; }
+
+.danger { border: 2px solid #440000; }
+
+.tabs {
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+}
+
+.tabs a {
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.8rem 0;
+    font-weight: 500;
+    opacity: 0.7;
+    transition: all 0.2s;
+}
+
+.tabs a:hover {
+    opacity: 1;
+}
+
+.tabs a.active {
+    opacity: 1;
+    border-bottom: 3px solid var(--accent);
+    font-weight: bold;
+}
+
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.habit-card {
+    background: var(--card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+}
+
+.habit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.habit-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    cursor: pointer;
+}
+
+.habit-main h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.habit-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.tag {
+    background: var(--accent);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.progress-gain {
+    color: var(--success);
+    font-weight: bold;
+}
+
+.streak {
+    margin-left: auto;
+    font-size: 1.4rem;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+
+.habit-detail {
+    padding: 1.5rem;
+    border-top: 1px solid #333;
+    background: rgba(0,0,0,0.2);
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-edit, .btn-delete {
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background: #555;
+    color: white;
+}
+
+.btn-delete {
+    background: #880000;
+    color: white;
+}
+
+.hidden { display: none; }
+
+/* Modal improvements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 8px;
+    border: none;
+    background: #333;
+    color: white;
+    font-size: 1rem;
+}
+
+.day-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.day-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.day-label input {
+    width: auto;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background: #444;
+    color: white;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+}
