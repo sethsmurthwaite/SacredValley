@@ -1,2 +1,382 @@
-<h2>Clans & Leaderboards</h2>
-<p>Coming soon — join a clan, compete with your rivals, and rise together.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sacred Valley • Clans</title>
+
+  <style>
+    :root {
+      --bg: #0b0b1a;
+      --card: #1a1a2e;
+      --text: #e0e0e0;
+      --accent: #4169e1;
+      --success: #50fa7b;
+      --warning: #ff6b6b;
+      --border: #333;
+    }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(65, 105, 225, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(80, 250, 123, 0.1) 0%, transparent 50%);
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    h1, h2, h3 { margin: 0 0 1rem 0; color: var(--success); text-shadow: 0 0 10px rgba(80,250,123,0.3); }
+
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 0.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .tab-btn:hover {
+      background: rgba(65,105,225,0.2);
+      transform: translateY(-2px);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent), #6495ed);
+      color: white;
+      box-shadow: 0 0 20px rgba(65,105,225,0.6);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 4px;
+      background: var(--success);
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--success);
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Friends Tab */
+    .friend-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .friend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: rgba(65,105,225,0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(65,105,225,0.3);
+    }
+    .friend-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .friend-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #50fa7b, #4169e1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: black;
+      font-size: 1.2rem;
+    }
+    .friend-realm {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      color: var(--success);
+    }
+
+    /* Clan Tab */
+    .clan-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .clan-stat {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(80,250,123,0.1);
+      border-radius: 16px;
+      border: 1px solid rgba(80,250,123,0.3);
+    }
+    .clan-stat h3 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: var(--success);
+    }
+
+    /* Leaderboard */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: rgba(65,105,225,0.2);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    tr:hover {
+      background: rgba(65,105,225,0.15);
+    }
+    .rank {
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: var(--success);
+    }
+    .you {
+      background: rgba(80,250,123,0.2) !important;
+      border-left: 4px solid var(--success);
+    }
+
+    /* Buttons */
+    button {
+      padding: 0.8rem 1.5rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    button:hover {
+      background: #6495ed;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(65,105,225,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>Clans & Rivalries</h1>
+    <p>Forge alliances. Challenge sacred artists. Ascend together — or crush them on the path.</p>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="friends">Friends</button>
+      <button class="tab-btn" data-tab="clan">Your Clan</button>
+      <button class="tab-btn" data-tab="leaderboard">Leaderboard</button>
+    </div>
+
+    <!-- Friends Tab -->
+    <div id="friends" class="tab-content active">
+      <div class="card">
+        <div class="card-header">
+          <h2>Your Sacred Allies</h2>
+          <button onclick="alert('Friend request sent!')">Add Friend +</button>
+        </div>
+        <div class="friend-list">
+          <div class="friend-item">
+            <div class="friend-info">
+              <div class="friend-avatar">L</div>
+              <div>
+                <strong>Lindon</strong><br>
+                <span class="friend-realm">Truegold • Path of Blackflame</span>
+              </div>
+            </div>
+            <span style="opacity:0.7;">Online</span>
+          </div>
+          <div class="friend-item">
+            <div class="friend-info">
+              <div class="friend-avatar">Y</div>
+              <div>
+                <strong>Yerin</strong><br>
+                <span class="friend-realm">Herald • Path of the Endless Sword</span>
+              </div>
+            </div>
+            <span style="opacity:0.7; color:#ff6b6b;">In Battle</span>
+          </div>
+          <div class="friend-item">
+            <div class="friend-info">
+              <div class="friend-avatar">E</div>
+              <div>
+                <strong>Eithan</strong><br>
+                <span class="friend-realm">Monarch • Path of the Hollow King</span>
+              </div>
+            </div>
+            <span style="opacity:0.7;">Away</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clan Tab -->
+    <div id="clan" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Blackflame Empire</h2>
+          <button>Create Clan</button>
+        </div>
+        <p><em>"Burn bright. Burn together."</em></p>
+
+        <div class="clan-info-grid">
+          <div class="clan-stat">
+            <h3>47</h3>
+            <p>Members</p>
+          </div>
+          <div class="clan-stat">
+            <h3>8.2M</h3>
+            <p>Total Madra</p>
+          </div>
+          <div class="clan-stat">
+            <h3>#12</h3>
+            <p>Global Rank</p>
+          </div>
+          <div class="clan-stat">
+            <h3>92%</h3>
+            <p>Daily Activity</p>
+          </div>
+        </div>
+
+        <h3>Top Contributors This Week</h3>
+        <ol>
+          <li><strong>Yerin</strong> — 142,000 madra</li>
+          <li><strong>Lindon</strong> — 138,000 madra</li>
+          <li><strong>You</strong> — 112,000 madra 🔥</li>
+          <li>Eithan — 98,000 madra</li>
+          <li>Orthos — 67,000 madra</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Leaderboard Tab -->
+    <div id="leaderboard" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <h2>Global Leaderboard • This Month</h2>
+          <select style="padding:0.5rem; border-radius:8px;">
+            <option>This Month</option>
+            <option>All Time</option>
+            <option>This Week</option>
+          </select>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Sacred Artist</th>
+              <th>Realm</th>
+              <th>Clan</th>
+              <th>Total Madra</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rank">#1</td>
+              <td><strong>Northstrider</strong></td>
+              <td>Monarch</td>
+              <td>None</td>
+              <td>892M</td>
+            </tr>
+            <tr>
+              <td class="rank">#2</td>
+              <td><strong>Sha Miara</strong></td>
+              <td>Monarch</td>
+              <td>Ninecloud Court</td>
+              <td>784M</td>
+            </tr>
+            <tr class="you">
+              <td class="rank">#47</td>
+              <td><strong>You</strong> 🔥</td>
+              <td>Truegold</td>
+              <td>Blackflame Empire</td>
+              <td>1.24M</td>
+            </tr>
+            <tr>
+              <td class="rank">#48</td>
+              <td>Lindon</td>
+              <td>Truegold</td>
+              <td>Blackflame Empire</td>
+              <td>1.22M</td>
+            </tr>
+            <tr>
+              <td class="rank">#49</td>
+              <td>Yerin</td>
+              <td>Herald</td>
+              <td>Blackflame Empire</td>
+              <td>1.18M</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
